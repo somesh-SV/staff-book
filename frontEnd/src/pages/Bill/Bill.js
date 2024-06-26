@@ -21,14 +21,13 @@ function Bill(props) {
       <div className="grid grid-cols-2 text-sm border-r-0 border-2 border-gray-900 border-t-0">
         <div className="border-r-2 border-gray-900 p-2 pt-0">
           <p className="font-semibold">Customer Name & Address</p>
-          <p className="font-bold text-sm">Mr Ram</p>
+          <p className="font-bold text-sm">{props.customerName}</p>
           <address className="w-[200px] text-xs">
-            14B, An den Irlen 8, Patriceberg, HH 91783 Avenue New York New York
-            10001 U.S.A
+            {props.customerAddress}
           </address>
           <span className="flex space-x-3 mb-0.5">
             <p className="font-semibold ">GSTIN</p>
-            <p> : RA255YX87791</p>
+            <p> : {props.gst}</p>
           </span>
         </div>
         <div className="border-r-2 border-y-0 border-gray-900">
@@ -38,7 +37,7 @@ function Bill(props) {
               <p>Invoice Date</p>
             </span>
             <span className="justify-between space-y-2">
-              <p> : INV-0200303</p>
+              <p> : {props.invoiceNumber}</p>
               <p> : {props.currentDate}</p>
             </span>
           </div>

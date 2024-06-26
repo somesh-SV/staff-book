@@ -52,13 +52,18 @@ const Invoice = () => {
   const [productStock, setProductStock] = useState(null);
 
   const handleOpen = () => setOpen(!open);
-  const currentDate = new Date().toISOString().split("T")[0];
+  const currentDate = new Date();
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const year = currentDate.getFullYear();
+
+  const formattedDate = `${day}/${month}/${year}`;
   const generatePDF = async () => {
     const element = invoiceRef.current;
     const customerName = selectedCustomer
       ? selectedCustomer.label.replace(/ /g, "_")
       : "Unknown_Customer";
-    const fileName = `${currentDate}_${customerName}.pdf`;
+    const fileName = `${formattedDate}_${customerName}.pdf`;
 
     const opt = {
       margin: 0,
@@ -292,6 +297,15 @@ const Invoice = () => {
     setWithOutRound(newTotalAmount);
   }, [tableRows, cgst, sgst, igst]);
 
+  function generateInvoiceNumber() {
+    const prefix = "INV";
+    const randomNumber = Math.floor(Math.random() * 10000000)
+      .toString()
+      .padStart(7, "0");
+    const invoiceNumber = `${prefix}-${randomNumber}`;
+    return invoiceNumber;
+  }
+
   useEffect(() => {
     let cgstAmount = 0;
     let sgstAmount = 0;
@@ -309,6 +323,7 @@ const Invoice = () => {
     setSgstVal(sgstAmount.toFixed(2));
     setIgstVal(igstAmount.toFixed(2));
   }, [subTotal, cgst, sgst, igst]);
+
   useEffect(() => {
     if (editingItem) {
       const calculatedTotal =
@@ -621,13 +636,16 @@ const Invoice = () => {
               tableRows={tableRows}
               subTotal={subTotal}
               gstAmount={gstAmount}
-              gst={customerDetail?.gst}
               totalAmount={totalAmount}
               cgst={cgstVal}
               sgst={sgstVal}
               igst={igstVal}
               roundedOff={roundedOffValue}
-              currentDate={currentDate}
+              currentDate={formattedDate}
+              customerName={customerDetail.customerName}
+              customerAddress={customerDetail.customerAddress}
+              gst={customerDetail.gst}
+              invoiceNumber={generateInvoiceNumber()}
             />
           </div>
         </DialogBody>
