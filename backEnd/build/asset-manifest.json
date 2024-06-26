@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c86efa3a.css",
+    "main.js": "/static/js/main.33b90387.js",
+    "static/media/pexels-irina-iriser-1408221.jpg": "/static/media/pexels-irina-iriser-1408221.4c3e204239695c97cb02.jpg",
+    "static/media/product5.jpeg": "/static/media/product5.0f968fd35c6b91556ecf.jpeg",
+    "static/media/product6.jpeg": "/static/media/product6.b21244df254034081a14.jpeg",
+    "static/media/product10.jpeg": "/static/media/product10.3b7f78e18c3e0c276b5a.jpeg",
+    "static/media/product9.jpeg": "/static/media/product9.3fdf3fd183d5516f12f3.jpeg",
+    "static/media/product8.jpeg": "/static/media/product8.849042dcf760e84f64be.jpeg",
+    "static/media/product4.jpeg": "/static/media/product4.6712abfd9fbb84355647.jpeg",
+    "static/media/logo.png": "/static/media/logo.329401f291cb7a96edf3.png",
+    "static/media/product3.jpeg": "/static/media/product3.a7ed09e3473d120842f3.jpeg",
+    "static/media/product2.jpeg": "/static/media/product2.b06e285af05ab21e7063.jpeg",
+    "static/media/product1.jpeg": "/static/media/product1.526b49060b76cf32130f.jpeg",
+    "index.html": "/index.html",
+    "main.c86efa3a.css.map": "/static/css/main.c86efa3a.css.map",
+    "main.33b90387.js.map": "/static/js/main.33b90387.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c86efa3a.css",
+    "static/js/main.33b90387.js"
+  ]
+}
