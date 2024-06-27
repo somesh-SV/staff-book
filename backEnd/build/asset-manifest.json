@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c86efa3a.css",
-    "main.js": "/static/js/main.128dcefc.js",
+    "main.js": "/static/js/main.5d82614c.js",
     "static/media/pexels-irina-iriser-1408221.jpg": "/static/media/pexels-irina-iriser-1408221.4c3e204239695c97cb02.jpg",
     "static/media/product5.jpeg": "/static/media/product5.0f968fd35c6b91556ecf.jpeg",
     "static/media/product6.jpeg": "/static/media/product6.b21244df254034081a14.jpeg",
@@ -15,10 +15,10 @@
     "static/media/product1.jpeg": "/static/media/product1.526b49060b76cf32130f.jpeg",
     "index.html": "/index.html",
     "main.c86efa3a.css.map": "/static/css/main.c86efa3a.css.map",
-    "main.128dcefc.js.map": "/static/js/main.128dcefc.js.map"
+    "main.5d82614c.js.map": "/static/js/main.5d82614c.js.map"
   },
   "entrypoints": [
     "static/css/main.c86efa3a.css",
-    "static/js/main.128dcefc.js"
+    "static/js/main.5d82614c.js"
   ]
 }

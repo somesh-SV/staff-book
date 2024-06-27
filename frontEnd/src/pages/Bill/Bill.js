@@ -8,10 +8,10 @@ function Bill(props) {
         <p className="pb-3 -mt-1 text-lg">Tax Invoice</p>
       </div>
       <div className="flex flex-col gap-1 border-t-0 border-2 border-gray-900 py-1 pt-0 text-center items-center justify-center">
-        <p className="font-bold">SR Fancy Mart</p>
+        <p className="font-bold">SR Marketing</p>
         <address className="w-[200px] text-sm">
-          14B, Northern Street Greater South Avenue New York New York 10001
-          U.S.A
+          47, Sengunthapuram Main Road, 3 <sup>rd</sup> Cross Corner,
+          <br /> Karur - 639002
         </address>
         <span className="flex space-x-3 mb-2 text-sm">
           <p className="font-semibold ">GSTIN</p>
