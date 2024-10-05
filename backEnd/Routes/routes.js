@@ -5,6 +5,7 @@ const staffContoller = require("../Controller/staffController");
 const staffMgmtContoller = require("../Controller/staffMgmtController");
 const productContoller = require("../Controller/productController");
 const customerContoller = require("../Controller/customerController");
+const invoiceContoller = require("../Controller/invoiceController");
 
 // Staff Route
 apiRoutes.post("/staff", staffContoller.postStaff);
@@ -52,5 +53,7 @@ apiRoutes.get("/filterLinkedProduct", customerContoller.filterLinkedProduct);
 
 // Bill
 apiRoutes.put("/clearStock", productContoller.clearProduct);
+apiRoutes.post("/createInvoice", invoiceContoller.postInvoice);
+apiRoutes.get("/getInvoice/:id", invoiceContoller.getInvoiceById);
 
 module.exports = apiRoutes;

@@ -60,4 +60,9 @@ export const SideNavData = [
     path: "/invoice",
     icon: <materialIcon.ReceiptLong />,
   },
+  {
+    title: "Sales",
+    path: "/sales",
+    icon: <materialIcon.CurrencyRupee />,
+  },
 ];

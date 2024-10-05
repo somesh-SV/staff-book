@@ -14,7 +14,7 @@ function NavBar(p) {
         <div className="flex h-screen">
           <SideBar open={open} />
           <div className="flex flex-col w-full">
-            <div className="py-3 sticky top-0 z-50">
+            <div className="py-3 top-0 z-50">
               <div className="max-w-screen-xl flex items-center ml-3">
                 <button onClick={() => setOpen(!open)}>
                   {open ? (

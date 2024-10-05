@@ -76,9 +76,9 @@ const EditStock = () => {
                 {...register("productName")}
               />
             </div>
-            <div className="py-2">
+            {/* <div className="py-2">
               <input type="file" {...register("img")} />
-            </div>
+            </div> */}
             <div className="space-y-2">
               <Typography variant="h6" color="blue-gray">
                 Product ID

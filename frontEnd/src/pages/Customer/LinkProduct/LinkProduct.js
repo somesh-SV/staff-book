@@ -12,13 +12,14 @@ const LinkProduct = ({ getCustomerDetail }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
-  const [products, setproducts] = useState();
+  const [products, setProducts] = useState();
+  const [defaultOptions, setdefaultOptions] = useState();
 
   const getProducts = async (searchValue, callback) => {
     try {
       const res = await GetProduct();
       if (res) {
-        setproducts(res.data);
+        setProducts(res.data);
         const filteredOptions = res.data
           .filter((option) =>
             option.productName
@@ -50,6 +51,28 @@ const LinkProduct = ({ getCustomerDetail }) => {
       setPrice("");
     }
   };
+
+  const fetchDefaultProducts = async () => {
+    try {
+      const res = await GetProduct();
+      if (res.data.length > 0) {
+        setProducts(res.data);
+        const firstFiveProducts = res.data
+          .slice(0, res.data.length)
+          .map((option) => ({
+            label: option.productName,
+            value: option.productId,
+          }));
+        console.log("res.data : ", firstFiveProducts);
+        setdefaultOptions(firstFiveProducts);
+      }
+    } catch (error) {
+      console.error("Error fetching default products:", error);
+    }
+  };
+  React.useEffect(() => {
+    fetchDefaultProducts();
+  }, []);
 
   const onSubmit = async () => {
     const data = {
@@ -90,7 +113,24 @@ const LinkProduct = ({ getCustomerDetail }) => {
               loadOptions={getProducts}
               onChange={handleSelect}
               isClearable
+              defaultOptions={defaultOptions}
               value={selectedProduct}
+              styles={{
+                menuList: (provided) => ({
+                  ...provided,
+                  maxHeight: "150px",
+                  color: "black",
+                }),
+                control: (provided, state) => ({
+                  ...provided,
+                  "&:hover": {
+                    borderColor: "back",
+                    boxShadow: "none",
+                  },
+                  boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                  borderColor: state.isFocused ? "#ccc" : provided.borderColor,
+                }),
+              }}
             />
           </span>
           <span>

@@ -20,12 +20,11 @@ import Bill from "./Bill";
 import { GetCustomer } from "../../services/customerServices";
 import { ToastError } from "../../components/Toaster/Tost";
 import { ClearProduct } from "../../services/productServices";
-import { useNavigate } from "react-router-dom";
+import { createInvoice } from "../../services/invoiceServices";
 const TABLE_HEAD = ["Product Name", "Price", "Quantity", "Total", "Action"];
 
 const Invoice = () => {
   const [open, setOpen] = useState(false);
-  const [conform, setConform] = useState(false);
   const invoiceRef = useRef(null);
   const [selectedCustomer, setSelectedCustomer] = useState();
   const [customer, setCustomer] = useState();
@@ -50,14 +49,20 @@ const Invoice = () => {
   const [igstVal, setIgstVal] = useState(0);
   const [withOutRound, setWithOutRound] = useState(0);
   const [productStock, setProductStock] = useState(null);
+  const [defaultOptions, setdefaultOptions] = useState();
+  const [invoiceNumber, setInvoiceNumber] = useState();
 
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => {
+    setOpen(!open);
+    generateInvoiceNumber();
+  };
   const currentDate = new Date();
   const day = String(currentDate.getDate()).padStart(2, "0");
   const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are 0-based
   const year = currentDate.getFullYear();
 
   const formattedDate = `${day}/${month}/${year}`;
+
   const generatePDF = async () => {
     const element = invoiceRef.current;
     const customerName = selectedCustomer
@@ -77,35 +82,85 @@ const Invoice = () => {
       .from(element)
       .set(opt)
       .outputPdf("blob")
-      .then(function (pdf) {
-        const url = URL.createObjectURL(pdf);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
+      .then(function (pdfBlob) {
+        const url = URL.createObjectURL(pdfBlob);
+        window.open(url, "_blank");
+        // Revoke the object URL after use to free up memory
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+        }, 100);
       });
-
-    const res = await ClearProduct(tableRows);
-    if (res) {
-      setCustomerDetail({
-        customerMobileNo: "",
-        customerAddress: "",
-        gst: "",
-      });
-      setSelectedCustomer(null);
-      setLinkedProducts([{}]);
-      setSelectedProduct(null);
-      setPrice(null);
-      setQuantity(null);
-      setTableRows([]);
-      setCgst(false);
-      setIgst(false);
-      setSgst(false);
-      handleOpen();
+    const invoiceData = {
+      tableRows,
+      currentDate: formattedDate,
+      invoiceNumber,
+      customerId: customerDetail._id,
+    };
+    try {
+      const res = await createInvoice(invoiceData);
+      if (res.data) {
+        console.log(res.data);
+      }
+    } catch (err) {
+      console.log("err from creating invoice : ", err);
     }
   };
+
+  // const generatePDF = async () => {
+  //   const element = invoiceRef.current;
+  //   const customerName = selectedCustomer
+  //     ? selectedCustomer.label.replace(/ /g, "_")
+  //     : "Unknown_Customer";
+  //   const fileName = `${formattedDate}_${customerName}.pdf`;
+
+  //   const opt = {
+  //     margin: 0,
+  //     filename: fileName,
+  //     image: { type: "jpeg", quality: 0.98 },
+  //     html2canvas: { scale: 2, height: 1000 },
+  //     jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+  //   };
+
+  //   html2pdf()
+  //     .from(element)
+  //     .set(opt)
+  //     .outputPdf("blob")
+  //     .then(function (pdf) {
+  //       const url = URL.createObjectURL(pdf);
+  //       const a = document.createElement("a");
+  //       a.href = url;
+  //       a.download = fileName;
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //     });
+
+  //   // const res = await ClearProduct(tableRows);
+  //   // if (res) {
+  //   //   setCustomerDetail({
+  //   //     customerMobileNo: "",
+  //   //     customerAddress: "",
+  //   //     gst: "",
+  //   //   });
+  //   //   setSelectedCustomer(null);
+  //   //   setLinkedProducts([{}]);
+  //   //   setSelectedProduct(null);
+  //   //   setPrice(null);
+  //   //   setQuantity(null);
+  //   //   setTableRows([]);
+  //   //   setCgst(false);
+  //   //   setIgst(false);
+  //   //   setSgst(false);
+  //   //   handleOpen();
+  //   // }
+  //   const invoiceData = {
+  //     tableRows,
+  //     currentDate: formattedDate,
+  //     invoiceNumber,
+  //     customerId: customerDetail._id,
+  //   };
+  //   console.log(invoiceData);
+  // };
 
   const getCustomer = async (searchValue, callback) => {
     try {
@@ -303,8 +358,29 @@ const Invoice = () => {
       .toString()
       .padStart(7, "0");
     const invoiceNumber = `${prefix}-${randomNumber}`;
-    return invoiceNumber;
+    setInvoiceNumber(invoiceNumber);
   }
+
+  const fetchDefaultCustomer = async () => {
+    try {
+      const res = await GetCustomer();
+      if (res.data.length > 0) {
+        setCustomer(res.data);
+        const firstFiveCustomers = res.data.slice(0, 5).map((option) => ({
+          label: option.customerName,
+          value: option._id,
+        }));
+        console.log("res.data : ", firstFiveCustomers);
+        setdefaultOptions(firstFiveCustomers);
+      }
+    } catch (error) {
+      console.error("Error fetching default customers:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchDefaultCustomer();
+  }, []);
 
   useEffect(() => {
     let cgstAmount = 0;
@@ -382,13 +458,25 @@ const Invoice = () => {
                   className="w-full"
                   loadOptions={getCustomer}
                   onChange={handleSelect}
+                  defaultOptions={defaultOptions}
                   isClearable
                   value={selectedCustomer}
                   styles={{
-                    menu: (provided) => ({
+                    menuList: (provided) => ({
                       ...provided,
-                      maxHeight: "160px",
-                      overflowY: "auto",
+                      maxHeight: "150px",
+                      color: "black",
+                    }),
+                    control: (provided, state) => ({
+                      ...provided,
+                      "&:hover": {
+                        borderColor: "back",
+                        boxShadow: "none",
+                      },
+                      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                      borderColor: state.isFocused
+                        ? "#ccc"
+                        : provided.borderColor,
                     }),
                   }}
                 />
@@ -436,10 +524,21 @@ const Invoice = () => {
                     : selectedProduct
                 }
                 styles={{
-                  menu: (provided) => ({
+                  menuList: (provided) => ({
                     ...provided,
-                    maxHeight: "160px",
-                    overflowY: "auto",
+                    maxHeight: "150px",
+                    color: "black",
+                  }),
+                  control: (provided, state) => ({
+                    ...provided,
+                    "&:hover": {
+                      borderColor: "back",
+                      boxShadow: "none",
+                    },
+                    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                    borderColor: state.isFocused
+                      ? "#ccc"
+                      : provided.borderColor,
                   }),
                 }}
               />
@@ -645,7 +744,7 @@ const Invoice = () => {
               customerName={customerDetail.customerName}
               customerAddress={customerDetail.customerAddress}
               gst={customerDetail.gst}
-              invoiceNumber={generateInvoiceNumber()}
+              invoiceNumber={invoiceNumber}
             />
           </div>
         </DialogBody>

@@ -138,7 +138,7 @@ const CustomerMgmt = () => {
           </div>
         </div>
         <div className="w-full overflow-x-auto min-h-fit max-h-[500px] no-scrollbar">
-          <table className="w-full min-w-max table-auto text-left">
+          <table className="w-full min-w-max table-auto text-center">
             <thead>
               <tr className="sticky top-0">
                 {TABLE_HEAD.map((head) => (

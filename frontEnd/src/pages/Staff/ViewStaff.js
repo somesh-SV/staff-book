@@ -103,8 +103,8 @@ const ViewStaff = () => {
           </div>
         </CardHeader>
         <CardBody className="px-0">
-          <div className="w-full overflow-x-auto min-h-fit max-h-[450px] no-scrollbar">
-            <table className="w-full min-w-max table-auto text-left">
+          <div className="w-full overflow-x-auto min-h-fit max-h-[440px] no-scrollbar">
+            <table className="w-full min-w-max table-auto text-center">
               <thead>
                 <tr className="sticky top-0">
                   {TABLE_HEAD.map((head) => (

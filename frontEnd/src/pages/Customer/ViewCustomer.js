@@ -108,7 +108,7 @@ const ViewCustomer = () => {
         </CardHeader>
         <CardBody className="px-0">
           <div className="w-full overflow-x-auto min-h-fit max-h-[500px] no-scrollbar">
-            <table className="w-full min-w-max table-auto text-left">
+            <table className="w-full min-w-max table-auto text-center">
               <thead>
                 <tr className="sticky top-0">
                   {TABLE_HEAD.map((head) => (
@@ -179,20 +179,15 @@ const ViewCustomer = () => {
                         <span className="inline-flex items-center space-x-3">
                           <EditButton path={`/editCustomer/${item._id}`} />
                           <DeleteButton fun={() => openDialog(item._id)} />
-                          <Tooltip
-                            placement="bottom"
-                            content="linkProduct"
-                            className="text-[10px] font-semibold py-0.5 px-2 pb-0 bg-teal-50 text-teal-800 rounded-sm"
+
+                          <button
+                            className="bg-teal-50 rounded-tl-xl rounded-br-xl rounded-sm p-1.5 inline-flex"
+                            onClick={() =>
+                              navigate(`/customerMgmt/${item._id}`)
+                            }
                           >
-                            <button
-                              className="bg-teal-50 rounded-tl-xl rounded-br-xl rounded-sm p-1.5 inline-flex"
-                              onClick={() =>
-                                navigate(`/customerMgmt/${item._id}`)
-                              }
-                            >
-                              <LinkIcon className="w-5 h-5 text-teal-600" />
-                            </button>
-                          </Tooltip>
+                            <LinkIcon className="w-5 h-5 text-teal-600" />
+                          </button>
                         </span>
                       </td>
                     </tr>

@@ -23,14 +23,24 @@ body {
   scrollbar-width: none;
 }
 
-/* .no-scrollbar::-webkit-scrollbar {
-  display: none;
+.no-scrollbar::-webkit-scrollbar {
+  width: 5px; /* For vertical scrollbars */
+  height: 5px; /* For horizontal scrollbars */
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
-.react-select-container {
-  width: 100%;
+.no-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(92 107 192);
+  border-radius: 20px;
 }
+
+/* Optional: Style the track */
+.no-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* .no-scrollbar {
+  -ms-overflow-style: none;
+} */
+/* .react-select-container {
+  width: 100%;
+} */

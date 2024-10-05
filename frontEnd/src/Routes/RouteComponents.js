@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React from "react";
 import Dashboard from "../pages/Dashboard";
 import { Route, Routes } from "react-router-dom";
 import AddStaff from "../pages/Staff/AddStaff";
@@ -14,8 +14,8 @@ import EditCustomer from "../pages/Customer/EditCustomer";
 import CustomerMgmt from "../Management/CustomerMgmt";
 import Invoice from "../pages/Bill/Invoice";
 import InvoiceList from "../pages/Bill/InvoiceList";
-import LoginPage from "../pages/Admin/LoginPage";
-//const LoginPage = lazy(() => import("../Management/Admin/LoginPage"));
+import SalesList from "../pages/SalesList/SalesList";
+
 const RouteComponents = () => {
   return (
     <div className="p-4">
@@ -34,6 +34,7 @@ const RouteComponents = () => {
         <Route path="/customerMgmt/:id" element={<CustomerMgmt />} />
         <Route path="/invoice" element={<Invoice />} />
         <Route path="/invoiceList/" element={<InvoiceList />} />
+        <Route path="/sales/" element={<SalesList />} />
       </Routes>
     </div>
   );

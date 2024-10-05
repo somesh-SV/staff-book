@@ -59,6 +59,7 @@ const StockMgmt = () => {
   const [isEdit, setisEdit] = useState(false);
   const [editId, setEditId] = useState();
   const [deleteId, setDeleteId] = useState("");
+  const [defaultOptions, setdefaultOptions] = useState();
 
   const getStaffDetail = async () => {
     try {
@@ -253,6 +254,28 @@ const StockMgmt = () => {
     }
   }, []);
 
+  const fetchDefaultProducts = async () => {
+    try {
+      const res = await GetProduct();
+      if (res.data.length > 0) {
+        setProducts(res.data);
+        const firstFiveProducts = res.data
+          .slice(0, res.data.length)
+          .map((option) => ({
+            label: option.productName,
+            value: option.productId,
+          }));
+        console.log("res.data : ", firstFiveProducts);
+        setdefaultOptions(firstFiveProducts);
+      }
+    } catch (error) {
+      console.error("Error fetching default products:", error);
+    }
+  };
+  useEffect(() => {
+    fetchDefaultProducts();
+  }, []);
+
   return (
     <div>
       <Card className="mb-4">
@@ -277,7 +300,26 @@ const StockMgmt = () => {
                 loadOptions={getProducts}
                 onChange={hangleSelect}
                 isClearable
+                defaultOptions={defaultOptions}
                 value={selectedProduct}
+                styles={{
+                  menuList: (provided) => ({
+                    ...provided,
+                    maxHeight: "150px",
+                    color: "black",
+                  }),
+                  control: (provided, state) => ({
+                    ...provided,
+                    "&:hover": {
+                      borderColor: "back",
+                      boxShadow: "none",
+                    },
+                    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                    borderColor: state.isFocused
+                      ? "#ccc"
+                      : provided.borderColor,
+                  }),
+                }}
               />
             </div>
             <div>
@@ -369,7 +411,7 @@ const StockMgmt = () => {
             className="w-full  min-h-fit  overflow-x-auto h-[450px] no-scrollbar"
             ref={tableRef}
           >
-            <table className="w-full min-w-max table-auto text-left">
+            <table className="w-full min-w-max table-auto text-center">
               <thead>
                 <tr className="sticky top-0 ">
                   {TABLE_HEAD.map((head) => (
